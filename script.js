@@ -415,6 +415,7 @@ requestAnimationFrame =
 
 function startGame() {
   startSound.play()
+  document.querySelector(".notice-screen").style.display = "none";
   document.querySelector(".start-game").style.display = "none";
   document.getElementById("canvas").style.display = "block";
   startTime = Date.now();
