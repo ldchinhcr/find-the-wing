@@ -14,13 +14,13 @@ let startTime = Date.now();
 let elapsedTime = 0;
 
 let gateX = 400;
-let gateY = 300;
+let gateY = 400;
 
 let overX = 250;
 let overY = 250;
 
 let zeusX = Math.round(Math.random() * canvas.width - 30);
-let zeusY = Math.round(Math.random() * canvas.width - 30);
+let zeusY = Math.round(Math.random() * canvas.height - 30);
 
 let fireX;
 let fireY;
@@ -58,8 +58,8 @@ function save() {
 
 
 
-let speedX = 3,
-    speedY = 3;
+let speedX = 3;
+let speedY = 3;
 
 // Sound effect
 let collideSound = new Audio("audio/collide.mp3");
@@ -189,9 +189,7 @@ let update = function () {
     game = false;
     loseSound.play();
   }
-  if (score >= 5) {
-    gateReady = true
-    if (
+  if (score >= 5 &&
       heroX <= gateX + 38 &&
       gateX <= heroX + 38 &&
       heroY <= gateY + 38 &&
@@ -199,25 +197,20 @@ let update = function () {
     ) {
       game = false;
       loseSound.play();
-
-    } else if (score >= 10 &&
+    } 
+    if (score >= 10 &&
       heroX <= fireX + 25 &&
       fireX <= heroX + 25 &&
       heroY <= fireY + 25 &&
       fireY <= heroY + 25) {
       game = false;
       loseSound.play();
-
     }
-  }
   // Update the time.
   elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
   houndX += speedX;
   houndY += speedY;
-
-  gateX += gateSpeedX;
-  gateY += gateSpeedY;
 
   if (38 in keysDown) {
     // Player is holding up key
@@ -272,9 +265,9 @@ let update = function () {
     speedY = -speedY;
   }
 
-  if (gateX > canvas.width - 100 || gateX < 15) {
+  if (gateX > (canvas.width - 100) || gateX < 15) {
     gateSpeedX = -gateSpeedX;
-  } else if (gateY > canvas.height - 100 || gateY < 15) {
+  } else if (gateY > (canvas.height - 100) || gateY < 15) {
     gateSpeedY = -gateSpeedY;
   }
 
@@ -290,6 +283,13 @@ let update = function () {
   }
   if (zeusY < 15) {
     zeusY = 15;
+  }
+
+  if (score >=5) {
+    gateReady = true
+    gateX += gateSpeedX;
+    gateY += gateSpeedY;
+    console.log(gateSpeedX, gateSpeedY)
   }
 
   // Check if player and monster collided. Our images
@@ -310,11 +310,11 @@ let update = function () {
       zeusReady = true
     }
 
-    if (score === 5 || score === 18) {
-      gateSpeedX = gateSpeedX*3/2;
-      gateSpeedY = gateSpeedY*3/2;
-      speedX = speedX*3/2;
-      speedX = speedY*3/2;
+    if (score === 6 || score === 18) {
+      gateSpeedX = gateSpeedX*(2);
+      gateSpeedY = gateSpeedY*(2);
+      speedX = speedX*(2);
+      speedX = speedY*(2);
     } else if (score === 13 || score === 22) {
       gateSpeedX = gateSpeedX*2;
       gateSpeedY = gateSpeedY*2;
@@ -328,7 +328,7 @@ let update = function () {
     }
   }
 
-  if (
+  if ( zeusReady === true &&
     heroX <= zeusX + 32 &&
     zeusX <= heroX + 32 &&
     heroY <= zeusY + 32 &&
