@@ -417,6 +417,7 @@ function startGame() {
   startSound.play()
   document.querySelector(".notice-screen").style.display = "none";
   document.querySelector(".start-game").style.display = "none";
+  document.querySelector(".boxCanvas").style.display = "block";
   document.getElementById("canvas").style.display = "block";
   startTime = Date.now();
   runTheGame();
