@@ -1,11 +1,11 @@
 let canvas;
 let ctx;
 
-canvas = document.createElement("canvas");
+canvas = document.getElementById("canvas");
 ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
-document.body.appendChild(canvas);
+// document.body.appendChild(canvas);
 
 let bgReady, heroReady, monsterReady, houndReady, gateReady, overReady, zeusReady, fireReady;
 let bgImage, heroImage, monsterImage, houndImage, gateImage, overImage, zeusImage, fireImage;
@@ -13,14 +13,14 @@ let bgImage, heroImage, monsterImage, houndImage, gateImage, overImage, zeusImag
 let startTime = Date.now();
 let elapsedTime = 0;
 
-let gateX = 600;
-let gateY = 500;
+let gateX = 400;
+let gateY = 300;
 
 let overX = 250;
 let overY = 250;
 
-let zeusX = Math.round(Math.random() * (canvas.width - 60));
-let zeusY = Math.round(Math.random() * (canvas.height - 60));
+let zeusX = Math.round(Math.random() * canvas.width - 30);
+let zeusY = Math.round(Math.random() * canvas.width - 30);
 
 let fireX;
 let fireY;
@@ -28,22 +28,43 @@ let fireY;
 let fireSpeedX;
 let fireSpeedY;
 
-let gateSpeedX = 2;
-let gateSpeedY = 2;
-
-let notRestarted = true;
+let gateSpeedX = 3;
+let gateSpeedY = 3;
 
 let score = 0;
 let round = 0;
-let visibleScore = 0;
-let highScore = 0;
-let highRound = 0;
 
-let collideSound;
-let loseSound;
+let newHighScore = 0;
+let newBestTime = 0;
 
-let speedX = 2,
-    speedY = 2;
+let player = null;
+
+function getHighest(type) {
+  return localStorage.getItem(type);
+}
+
+function save() {
+  let currentHighestScore = getHighest('newHighScore');
+  let currentBestTime = getHighest('newBestTime');
+
+  if (!currentHighestScore || (currentHighestScore && currentHighestScore < score)) {
+    localStorage.setItem("newHighScore", score);
+  }
+
+  if (!currentBestTime || (currentBestTime && currentBestTime < elapsedTime)) {
+    localStorage.setItem("newBestTime", elapsedTime);
+  }
+}
+
+
+
+let speedX = 3,
+    speedY = 3;
+
+// Sound effect
+let collideSound = new Audio("audio/collide.mp3");
+let loseSound = new Audio("audio/over.mp3");
+let startSound = new Audio("audio/start.mp3");
 function runTheGame() {
   bgImage = new Image();
   bgImage.onload = function () {
@@ -129,9 +150,35 @@ function setupKeyboardListeners() {
   );
 }
 
+
+// Music control;
+let myAudio = document.getElementById("audio");
+let isPlaying = true;
+
+myAudio.autoplay = false;
+
+function togglePlay() {
+  if (!isPlaying) {
+    myAudio.pause();
+    document.getElementById("audio-button").innerHTML = "🎶 ON 🎶";
+    document.getElementById("audio-button").className = "btn btn-success";
+  } else {
+    myAudio.play();
+    document.getElementById("audio-button").innerHTML = "🏳 OFF 🏳";
+    document.getElementById("audio-button").className = "btn btn-warning text-white";
+  }
+};
+myAudio.onplaying = function () {
+  isPlaying = false;
+};
+myAudio.onpause = function () {
+  isPlaying = true;
+};
+
 let game = true;
 let update = function () {
   if (!game) {
+    save()
     overReady = true
     return;
   }
@@ -139,7 +186,8 @@ let update = function () {
     houndX <= heroX + 35 &&
     heroY <= houndY + 35 &&
     houndY <= heroY + 35) {
-    game = false
+    game = false;
+    loseSound.play();
   }
   if (score >= 5) {
     gateReady = true
@@ -149,13 +197,17 @@ let update = function () {
       heroY <= gateY + 38 &&
       gateY <= heroY + 30
     ) {
-      game = false
+      game = false;
+      loseSound.play();
+
     } else if (score >= 10 &&
       heroX <= fireX + 25 &&
       fireX <= heroX + 25 &&
       heroY <= fireY + 25 &&
       fireY <= heroY + 25) {
-      game = false
+      game = false;
+      loseSound.play();
+
     }
   }
   // Update the time.
@@ -164,21 +216,24 @@ let update = function () {
   houndX += speedX;
   houndY += speedY;
 
+  gateX += gateSpeedX;
+  gateY += gateSpeedY;
+
   if (38 in keysDown) {
     // Player is holding up key
-    heroY -= 3; //Speed of moving character
+    heroY -= 5; //Speed of moving character
   }
   if (40 in keysDown) {
     // Player is holding down key
-    heroY += 3;
+    heroY += 5;
   }
   if (37 in keysDown) {
     // Player is holding left key
-    heroX -= 3;
+    heroX -= 5;
   }
   if (39 in keysDown) {
     // Player is holding right key
-    heroX += 3;
+    heroX += 5;
   }
 
   // Wrap character in screen
@@ -245,48 +300,32 @@ let update = function () {
     heroY <= monsterY + 42 &&
     monsterY <= heroY + 42
   ) {
-
+    collideSound.play();
     monsterX = monsterX + Math.ceil(Math.random() * (canvas.width - 52));
     monsterY = monsterY + Math.ceil(Math.random() * (canvas.height - 59));
 
     score += 1;
 
-    if (score === 8 || score === 15) {
+    if (score === 8 || score === 15 || score === 20) {
       zeusReady = true
     }
-    if (score === 5) {
-      gateSpeedX = 2.5;
-      gateSpeedY = 2.5;
-      speedX = 2.5;
-      speedX = 2.5;
-    } else if (score === 13) {
-      gateSpeedX = 3;
-      gateSpeedY = 3;
-      speedX = 3;
-      speedX = 3;
+
+    if (score === 5 || score === 18) {
+      gateSpeedX = 4;
+      gateSpeedY = 4;
+      speedX = 4;
+      speedX = 4;
+    } else if (score === 13 || score === 22) {
+      gateSpeedX = 5;
+      gateSpeedY = 5;
+      speedX = 5;
+      speedX = 5;
+    } else if (score === 25 || score === 30) {
+      gateSpeedX = 7;
+      gateSpeedY = 7;
+      speedX = 6;
+      speedX = 6;
     }
-  }
-
-  if (score >= 10) {
-    fireReady = true
-    if (elapsedTime % 2 === 0) {
-      fireX = houndX
-      fireY = houndY
-    }
-    if ((fireX, fireY)) {
-      fireSpeedX = heroX - houndX;
-      fireSpeedY = heroY - houndY;
-
-      fireX += fireSpeedX / 40
-      fireY += fireSpeedY / 40
-    }
-  }
-
-  gateX += gateSpeedX
-  gateY += gateSpeedY
-
-  if (score === 8 || score === 15) {
-    zeusReady = false
   }
 
   if (
@@ -295,17 +334,34 @@ let update = function () {
     heroY <= zeusY + 32 &&
     zeusY <= heroY + 32
   ) {
-    gateSpeedX = 1;
-    gateSpeedY = 1;
-    speedX = 1;
-    speedX = 1;
+    gateSpeedX = 2;
+    gateSpeedY = 2;
+    speedX = 2;
+    speedX = 2;
     zeusReady = false
   }
 
+  if (score >= 10) {
+    fireReady = true
+  }
 
+  if (elapsedTime % 2 === 0) {
+    fireX = houndX
+    fireY = houndY
+  }
+  if ((fireX, fireY)) {
+    fireSpeedX = heroX - houndX;
+    fireSpeedY = heroY - houndY;
 
-
+    fireX += fireSpeedX / 40
+    fireY += fireSpeedY / 40
+  }
 };
+
+let reset = function () {
+  save()
+  location.reload();
+}
 
 var render = function () {
   if (bgReady) {
@@ -338,6 +394,10 @@ var render = function () {
   ctx.textBaseline = "top";
   ctx.fillText(`Eslapsed Time: ${elapsedTime}`, 20, 20);
   ctx.fillText(`Score: ${score}`, 20, 35);
+  document.getElementById('best-time').innerHTML = getHighest('newBestTime');
+  document.getElementById("high-score").innerHTML = getHighest('newHighScore');
+  document.getElementById("score-area").innerHTML = `${score}`;
+  document.getElementById("elapsed-time").innerHTML = `${elapsedTime}`;
 };
 
 var main = function () {
@@ -353,6 +413,49 @@ requestAnimationFrame =
   w.msRequestAnimationFrame ||
   w.mozRequestAnimationFrame;
 
-runTheGame();
-setupKeyboardListeners();
-main();
+function startGame() {
+  startSound.play()
+  document.querySelector(".start-game").style.display = "none";
+  document.getElementById("canvas").style.display = "block";
+  startTime = Date.now();
+  runTheGame();
+  setupKeyboardListeners();
+  main();
+}
+
+function submitName() {
+  let player = document.getElementById("player");
+  if (!currentName) {
+  let userInputName = document.getElementById("nameInput").value;
+  if (userInputName === "" && (currentName === null)) {
+    player.innerHTML = "<p style='color:red;'>Fill Your Name Above</p>";
+    document.querySelector(".input-area").style.display = "block";
+    document.querySelector(".start-game").style.display = "none";
+    return;
+  } else {
+    localStorage.setItem('player', userInputName)
+    player.innerHTML = "⚜ Hello " + userInputName + "!";
+    document.querySelector(".input-area").style.display = "none";
+    document.querySelector(".start-game").style.display = "block";
+  }
+} else {
+  player.innerHTML = "⚜ Hello " + currentName + "!";
+  document.querySelector(".input-area").style.display = "none";
+  document.querySelector(".start-game").style.display = "block";
+}
+};
+
+let submitButton = document.getElementById("submitBtn");
+submitButton.addEventListener("click", submitName);
+
+let currentName = localStorage.getItem('player')
+
+if (!currentName) {
+  document.querySelector(".input-area").style.display = "block";
+  document.querySelector(".start-game").style.display = "none";
+  submitName()
+} else {
+  document.querySelector(".input-area").style.display = "none";
+  document.querySelector(".start-game").style.display = "block";
+  let play = document.getElementById("player").innerHTML = "⚜ Hello " + currentName + "!";
+}
