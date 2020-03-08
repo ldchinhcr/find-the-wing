@@ -311,10 +311,10 @@ let update = function () {
     }
 
     if (score === 6 || score === 18) {
-      gateSpeedX = gateSpeedX*(2);
-      gateSpeedY = gateSpeedY*(2);
-      speedX = speedX*(2);
-      speedX = speedY*(2);
+      gateSpeedX = gateSpeedX*(1.5);
+      gateSpeedY = gateSpeedY*(1.5);
+      speedX = speedX*(1.5);
+      speedX = speedY*(1.5);
     } else if (score === 13 || score === 22) {
       gateSpeedX = gateSpeedX*2;
       gateSpeedY = gateSpeedY*2;
