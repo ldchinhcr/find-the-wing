@@ -311,20 +311,20 @@ let update = function () {
     }
 
     if (score === 5 || score === 18) {
-      gateSpeedX = 4;
-      gateSpeedY = 4;
-      speedX = 4;
-      speedX = 4;
+      gateSpeedX = gateSpeedX*3/2;
+      gateSpeedY = gateSpeedY*3/2;
+      speedX = speedX*3/2;
+      speedX = speedY*3/2;
     } else if (score === 13 || score === 22) {
-      gateSpeedX = 5;
-      gateSpeedY = 5;
-      speedX = 5;
-      speedX = 5;
+      gateSpeedX = gateSpeedX*2;
+      gateSpeedY = gateSpeedY*2;
+      speedX = speedX*2;
+      speedX = speedY*2;
     } else if (score === 25 || score === 30) {
-      gateSpeedX = 7;
-      gateSpeedY = 7;
-      speedX = 6;
-      speedX = 6;
+      gateSpeedX = gateSpeedX*3;
+      gateSpeedY = gateSpeedY*3;
+      speedX = speedX*3;
+      speedX = speedY*3;
     }
   }
 
@@ -334,10 +334,10 @@ let update = function () {
     heroY <= zeusY + 32 &&
     zeusY <= heroY + 32
   ) {
-    gateSpeedX = 2;
-    gateSpeedY = 2;
-    speedX = 2;
-    speedX = 2;
+    gateSpeedX = gateSpeedX/2;
+    gateSpeedY = gateSpeedY/2;
+    speedX = speedX/2;
+    speedX = speedY/2;
     zeusReady = false
   }
 
