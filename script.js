@@ -430,7 +430,7 @@ function submitName() {
   if (!currentName) {
   let userInputName = document.getElementById("nameInput").value;
   if (userInputName === "" && (currentName === null)) {
-    player.innerHTML = "<p style='color:red;'>Fill Your Name Above</p>";
+    player.innerHTML = "<p style='color:red;'>Fill Your Name Above To Play</p>";
     document.querySelector(".input-area").style.display = "block";
     document.querySelector(".start-game").style.display = "none";
     return;
