@@ -199,7 +199,7 @@ function convertTime(time) {
     const hour = Math.floor(minutesElapsed / minuteAndSecondsMath)
     const minutes = minutesElapsed % minuteAndSecondsMath
     const minutesFormat = minutes < 10 ? `0${minutes}` : minutes
-    const seconds = time % Math.pow(minuteAndSecondsMath, 2)
+    const seconds = (time - (minutes * minuteAndSecondsMath)) % Math.pow(minuteAndSecondsMath, 2)
     const secondsFormat = seconds < 10 ? `0${seconds}` : seconds
     return `${hour}h:${minutesFormat}m:${secondsFormat}s`
   }
