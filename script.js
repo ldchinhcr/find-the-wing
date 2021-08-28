@@ -258,21 +258,30 @@ let update = function () {
   houndX += speedX;
   houndY += speedY;
 
+  let heroSpeed = 5
+  if (score > 25) {
+    heroSpeed = 12
+  } else if (score > 10) {
+    heroSpeed = 9
+  } else if (score > 10) {
+    heroSpeed = 7
+  }
+
   if (38 in keysDown) {
     // Player is holding up key
-    heroY -= 5; //Speed of moving character
+    heroY -= heroSpeed; //Speed of moving character
   }
   if (40 in keysDown) {
     // Player is holding down key
-    heroY += 5;
+    heroY += heroSpeed;
   }
   if (37 in keysDown) {
     // Player is holding left key
-    heroX -= 5;
+    heroX -= heroSpeed;
   }
   if (39 in keysDown) {
     // Player is holding right key
-    heroX += 5;
+    heroX += heroSpeed;
   }
 
   // Wrap character in screen
