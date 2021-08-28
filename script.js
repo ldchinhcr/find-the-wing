@@ -39,9 +39,13 @@ let newBestTime = 0;
 
 let player = null;
 
-function getOptionsFromStorage(type) {
+function getOptionsFromStorage(type, isParse) {
   try {
-    return localStorage.getItem(type);
+    const val = localStorage.getItem(type);
+    if (isParse && val) {
+      return parseInt(val, 10)
+    }
+    return val
   } catch (error) {
     console.error(error)
   }
