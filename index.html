@@ -23,10 +23,23 @@
       background-repeat: no-repeat;
       background-position: cover;
     }
+
     .placeholder-container {
       inset: 0;
       position: absolute;
     }
+
+    .main-content {
+      display: block;
+    }
+
+    .footer-compyright {
+      font-size: 15px;
+      font-weight: bold;
+      text-decoration: none;
+      color: black;
+    }
+
     .mycustom-jumbotron {
       border: 10px solid #003366;
       min-width: 95%;
@@ -67,94 +80,97 @@
 
 <body>
   <main class="placeholder-container text-center">
-    <div class="jumbotron mycustom-jumbotron mx-auto mb-0 mt-1 py-1"
-      style="background-color: antiquewhite; width: 1200px;">
-      <h1 class="text-center mt-1"> Grab The Wing</h1>
-      <div class="row mx-2">
-        <div class="col-lg-4">
-          <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">
-            <div class="input-area">
-              <input type="text" id="nameInput" placeholder="Your name">
-              <button id="submitBtn">Submit</button>
-            </div>
-            <span id="player"></span>
-          </div>
-          <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">⚜ Highest Score ⚜: <span
-              id="high-score"></span>
-          </div>
-          <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">💪 Longest Survived Time 💪: <span
-              id="best-time"></span>
-          </div>
-          <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">💯 Score 💯: <span
-              id="score-area"></span>
-          </div>
-          <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">⌛ Elapsed Time ⌛: <span
-              id="elapsed-time"></span>
-          </div>
-          <!--collapse instruction starts-->
-          <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <button class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse1">
-                    <div style="font-size: 20px; font-weight: bold;">Rule of The Game</div>
-                  </button>
-                </h4>
+    <div class="main-content">
+      <div class="jumbotron mycustom-jumbotron mx-auto mb-0 mt-1 py-1"
+        style="background-color: antiquewhite; width: 1200px;">
+        <h1 class="text-center mt-1"> Grab The Wing</h1>
+        <div class="row mx-2">
+          <div class="col-lg-4">
+            <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">
+              <div class="input-area">
+                <input type="text" id="nameInput" placeholder="Your name">
+                <button id="submitBtn">Submit</button>
               </div>
-              <div id="collapse1" class="panel-collapse collapse">
-                <ol class="list-group">
-                  <li class="list-group-item">
-                    You need to claim <img src="images/wing.png" width="32px" height="32px" /> as much as you can.
-                  </li>
-                  <li class="list-group-item">
-                    The Dragon <img src="images/dragon-hound.gif" width="32px" height="32px" /> and The Demon <img
-                      src="images/gate.png" width="32px" height="32px" /> are gonna moving faster when you get some
-                    specific score.
-                    The Demon will appear when you got 5 score.
-                    Try to stay away from them.
-                  </li>
-                  <li class="list-group-item">
-                    But you can slow it down by grab Zeus Statue for a short time.
-                  </li>
-                  <li class="list-group-item">
-                    Especially it's would get more fun when you get score from 10, the Dragon will blow out a fireball
-                    to
-                    you every 2s. Try to avoid
-                    them too. Have fun with the game!
-                  </li>
-                </ol>
+              <span id="player"></span>
+            </div>
+            <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">⚜ Highest Score ⚜: <span
+                id="high-score"></span>
+            </div>
+            <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">💪 Longest Survived Time 💪: <span
+                id="best-time"></span>
+            </div>
+            <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">💯 Score 💯: <span
+                id="score-area"></span>
+            </div>
+            <div class="py-1 text-left font-weight-bold" style="font-size: 20px;">⌛ Elapsed Time ⌛: <span
+                id="elapsed-time"></span>
+            </div>
+            <!--collapse instruction starts-->
+            <div class="panel-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <button class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse1">
+                      <div style="font-size: 20px; font-weight: bold;">Rule of The Game</div>
+                    </button>
+                  </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                  <ol class="list-group">
+                    <li class="list-group-item">
+                      You need to claim <img src="images/wing.png" width="32px" height="32px" /> as much as you can.
+                    </li>
+                    <li class="list-group-item">
+                      The Dragon <img src="images/dragon-hound.gif" width="32px" height="32px" /> and The Demon <img
+                        src="images/gate.png" width="32px" height="32px" /> are gonna moving faster when you get some
+                      specific score.
+                      The Demon will appear when you got 5 score.
+                      Try to stay away from them.
+                    </li>
+                    <li class="list-group-item">
+                      But you can slow it down by grab Zeus Statue for a short time.
+                    </li>
+                    <li class="list-group-item">
+                      Especially it's would get more fun when you get score from 10, the Dragon will blow out a fireball
+                      to
+                      you every 2s. Try to avoid
+                      them too. Have fun with the game!
+                    </li>
+                  </ol>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="py-1 text-center">
-            <audio id="audio" src="audio/theme.mp3">
-            </audio>
-            <button id="audio-button" class="btn btn-success text-white" onclick="togglePlay()">🎶 ON 🎶</a>
-          </div>
+            <div class="py-1 text-center">
+              <audio id="audio" src="audio/theme.mp3">
+              </audio>
+              <button id="audio-button" class="btn btn-success text-white" onclick="togglePlay()">🎶 ON 🎶</a>
+            </div>
 
-          <div class="py-1 text-center">
-            <button onclick="reset()" class="btn px-3 btn-danger">
-              Reset!
-            </button>
+            <div class="py-1 text-center">
+              <button onclick="reset()" class="btn px-3 btn-danger">
+                Reset!
+              </button>
+            </div>
+            <div class="py-1 d-flex justify-content-center start-button">
+              <button onclick="startGame(), togglePlay()" id="audio-button"
+                style="display: none; font-weight: bolder; font-size: 20px;" class="start-game btn px-3 btn-success">
+                <p class="start" style="text-shadow: 0px 10px 4px #000000">START GAME</p>
+              </button>
+            </div>
           </div>
-          <div class="py-1 d-flex justify-content-center start-button">
-            <button onclick="startGame(), togglePlay()" id="audio-button"
-              style="display: none; font-weight: bolder; font-size: 20px;" class="start-game btn px-3 btn-success">
-              <p class="start" style="text-shadow: 0px 10px 4px #000000">START GAME</p>
-            </button>
+          <div class="col-lg-8 px-3 py-1 d-flex align-items-center justify-content-center">
+            <h3 class="notice-screen" style="display: block;">Game Screen Display Here</h3>
+            <div class="boxCanvas"><canvas id="canvas" style="display: none;"></canvas></div>
           </div>
-        </div>
-        <div class="col-lg-8 px-3 py-1 d-flex align-items-center justify-content-center">
-          <h3 class="notice-screen" style="display: block;">Game Screen Display Here</h3>
-          <div class="boxCanvas"><canvas id="canvas" style="display: none;"></canvas></div>
         </div>
       </div>
-    </div>
-    <div>
-      <a href="https://github.com/ldchinhcr/find-the-wing"
-        style="font-size: 15px; font-weight: bold; text-decoration: none; color: black;">
-        <p class="text-center author my-0">Built From 🥂 with 💥Chinh Le💥</p>
-      </a>
+      <div>
+        <div>
+          <a href="https://github.com/ldchinhcr/find-the-wing" class="footer-copyright">
+            <p class="text-center author my-0">Built From 🥂 with 💥Chinh Le💥</p>
+          </a>
+        </div>
+      </div>
     </div>
   </main>
   <!-- script-->
