@@ -39,27 +39,42 @@ let newBestTime = 0;
 
 let player = null;
 
-function getHighest(type) {
-  return localStorage.getItem(type);
+function getOptionsFromStorage(type) {
+  try {
+    return localStorage.getItem(type);
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function setItemToStorage(key, value) {
+  try {
+    return localStorage.setItem(key, value);
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function save() {
-  let currentHighestScore = getHighest('newHighScore');
-  let currentBestTime = getHighest('newBestTime');
+  const currentHighestScore = getOptionsFromStorage('newHighScore');
+  const currentBestTime = getOptionsFromStorage('newBestTime');
 
-  if (!currentHighestScore || (currentHighestScore && currentHighestScore < score)) {
-    localStorage.setItem("newHighScore", score);
+  if (!currentHighestScore || (currentHighestScore < score)) {
+    setItemToStorage("newHighScore", score);
   }
 
   if (!currentBestTime || (currentBestTime && currentBestTime < elapsedTime)) {
-    localStorage.setItem("newBestTime", elapsedTime);
+    setItemToStorage("newBestTime", elapsedTime);
   }
+
+  return
 }
 
 
 
 let speedX = 3;
 let speedY = 3;
+const collideOffset = 30
 
 // Sound effect
 let collideSound = new Audio("audio/collide.mp3");
@@ -102,7 +117,7 @@ function runTheGame() {
 
   overImage = new Image();
   overImage.onload = function () {
-    // show the gate image
+    // show the over image
     overReady = false;
   };
   overImage.src = "images/gameover.png";
@@ -153,11 +168,12 @@ function setupKeyboardListeners() {
 
 // Music control;
 let myAudio = document.getElementById("audio");
-let isPlaying = true;
+let isPlaying = getOptionsFromStorage("isPlaying") || true;
 
 myAudio.autoplay = false;
 
 function togglePlay() {
+  setItemToStorage("isPlaying", !isPlaying)
   if (!isPlaying) {
     myAudio.pause();
     document.getElementById("audio-button").innerHTML = "🎶 ON 🎶";
@@ -168,10 +184,13 @@ function togglePlay() {
     document.getElementById("audio-button").className = "btn btn-warning text-white";
   }
 };
+
 myAudio.onplaying = function () {
+  setItemToStorage("isPlaying", false)
   isPlaying = false;
 };
 myAudio.onpause = function () {
+  setItemToStorage("isPlaying", true)
   isPlaying = true;
 };
 
@@ -190,22 +209,22 @@ let update = function () {
     loseSound.play();
   }
   if (score >= 5 &&
-      heroX <= gateX + 38 &&
-      gateX <= heroX + 38 &&
-      heroY <= gateY + 38 &&
-      gateY <= heroY + 30
-    ) {
-      game = false;
-      loseSound.play();
-    } 
-    if (score >= 10 &&
-      heroX <= fireX + 25 &&
-      fireX <= heroX + 25 &&
-      heroY <= fireY + 25 &&
-      fireY <= heroY + 25) {
-      game = false;
-      loseSound.play();
-    }
+    heroX <= gateX + 38 &&
+    gateX <= heroX + 38 &&
+    heroY <= gateY + 38 &&
+    gateY <= heroY + 30
+  ) {
+    game = false;
+    loseSound.play();
+  }
+  if (score >= 10 &&
+    heroX <= fireX + 25 &&
+    fireX <= heroX + 25 &&
+    heroY <= fireY + 25 &&
+    fireY <= heroY + 25) {
+    game = false;
+    loseSound.play();
+  }
   // Update the time.
   elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
@@ -285,7 +304,7 @@ let update = function () {
     zeusY = 15;
   }
 
-  if (score >=5) {
+  if (score >= 5) {
     gateReady = true
     gateX += gateSpeedX;
     gateY += gateSpeedY;
@@ -295,10 +314,10 @@ let update = function () {
   // Check if player and monster collided. Our images
   // are about 42 pixels big.
   if (
-    heroX <= monsterX + 42 &&
-    monsterX <= heroX + 42 &&
-    heroY <= monsterY + 42 &&
-    monsterY <= heroY + 42
+    heroX <= monsterX + collideOffset &&
+    monsterX <= heroX + collideOffset &&
+    heroY <= monsterY + collideOffset &&
+    monsterY <= heroY + collideOffset
   ) {
     collideSound.play();
     monsterX = monsterX + Math.ceil(Math.random() * (canvas.width - 52));
@@ -311,33 +330,33 @@ let update = function () {
     }
 
     if (score === 6 || score === 18) {
-      gateSpeedX = gateSpeedX*(1.5);
-      gateSpeedY = gateSpeedY*(1.5);
-      speedX = speedX*(1.5);
-      speedX = speedY*(1.5);
+      gateSpeedX = gateSpeedX * (1.5);
+      gateSpeedY = gateSpeedY * (1.5);
+      speedX = speedX * (1.5);
+      speedX = speedY * (1.5);
     } else if (score === 13 || score === 22) {
-      gateSpeedX = gateSpeedX*2;
-      gateSpeedY = gateSpeedY*2;
-      speedX = speedX*2;
-      speedX = speedY*2;
+      gateSpeedX = gateSpeedX * 2;
+      gateSpeedY = gateSpeedY * 2;
+      speedX = speedX * 2;
+      speedX = speedY * 2;
     } else if (score === 25 || score === 30) {
-      gateSpeedX = gateSpeedX*3;
-      gateSpeedY = gateSpeedY*3;
-      speedX = speedX*3;
-      speedX = speedY*3;
+      gateSpeedX = gateSpeedX * 3;
+      gateSpeedY = gateSpeedY * 3;
+      speedX = speedX * 3;
+      speedX = speedY * 3;
     }
   }
 
-  if ( zeusReady === true &&
+  if (zeusReady === true &&
     heroX <= zeusX + 32 &&
     zeusX <= heroX + 32 &&
     heroY <= zeusY + 32 &&
     zeusY <= heroY + 32
   ) {
-    gateSpeedX = gateSpeedX/2;
-    gateSpeedY = gateSpeedY/2;
-    speedX = speedX/2;
-    speedX = speedY/2;
+    gateSpeedX = gateSpeedX / 2;
+    gateSpeedY = gateSpeedY / 2;
+    speedX = speedX / 2;
+    speedX = speedY / 2;
     zeusReady = false
   }
 
@@ -428,23 +447,23 @@ function startGame() {
 function submitName() {
   let player = document.getElementById("player");
   if (!currentName) {
-  let userInputName = document.getElementById("nameInput").value;
-  if (userInputName === "" && (currentName === null)) {
-    player.innerHTML = "<p style='color:red;'>Fill Your Name Above To Play</p>";
-    document.querySelector(".input-area").style.display = "block";
-    document.querySelector(".start-game").style.display = "none";
-    return;
+    let userInputName = document.getElementById("nameInput").value;
+    if (userInputName === "" && (currentName === null)) {
+      player.innerHTML = "<p style='color:red;'>Fill Your Name Above To Play</p>";
+      document.querySelector(".input-area").style.display = "block";
+      document.querySelector(".start-game").style.display = "none";
+      return;
+    } else {
+      localStorage.setItem('player', userInputName)
+      player.innerHTML = "⚜ Hello " + userInputName + "!";
+      document.querySelector(".input-area").style.display = "none";
+      document.querySelector(".start-game").style.display = "block";
+    }
   } else {
-    localStorage.setItem('player', userInputName)
-    player.innerHTML = "⚜ Hello " + userInputName + "!";
+    player.innerHTML = "⚜ Hello " + currentName + "!";
     document.querySelector(".input-area").style.display = "none";
     document.querySelector(".start-game").style.display = "block";
   }
-} else {
-  player.innerHTML = "⚜ Hello " + currentName + "!";
-  document.querySelector(".input-area").style.display = "none";
-  document.querySelector(".start-game").style.display = "block";
-}
 };
 
 let submitButton = document.getElementById("submitBtn");
