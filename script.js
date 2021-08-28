@@ -382,15 +382,15 @@ let reset = function () {
   location.reload();
 }
 
-var render = function () {
+var render = async function () {
   if (bgReady) {
-    ctx.drawImage(bgImage, 0, 0);
+    await ctx.drawImage(bgImage, 0, 0);
   }
   if (heroReady) {
-    ctx.drawImage(heroImage, heroX, heroY);
+    await ctx.drawImage(heroImage, heroX, heroY);
   }
   if (monsterReady) {
-    ctx.drawImage(monsterImage, monsterX, monsterY);
+    await ctx.drawImage(monsterImage, monsterX, monsterY);
   }
   if (gateReady) {
     ctx.drawImage(gateImage, gateX, gateY);
