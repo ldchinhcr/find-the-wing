@@ -185,6 +185,29 @@ function togglePlay() {
   }
 };
 
+function convertTime(time) {
+  if (typeof time !== 'number') {
+    return '0s'
+  }
+  const minuteAndSecondsMath = 60
+  if (time <= minuteAndSecondsMath) {
+    return `${time}s`
+  }
+
+  const minutesElapsed = Math.floor(time / minuteAndSecondsMath)
+  if (minutesElapsed > minuteAndSecondsMath) {
+    const hour = Math.floor(minutesElapsed / minuteAndSecondsMath)
+    const minutes = minutesElapsed % minuteAndSecondsMath
+    const minutesFormat = minutes < 10 ? `0${minutes}` : minutes
+    const seconds = time % Math.pow(minuteAndSecondsMath, 2)
+    const secondsFormat = seconds < 10 ? `0${seconds}` : seconds
+    return `${hour}h:${minutesFormat}m:${secondsFormat}s`
+  }
+  const seconds = time % minuteAndSecondsMath
+  const secondsFormat = seconds < 10 ? `0${seconds}` : seconds
+  return `${minutesElapsed}m:${secondsFormat}s`
+}
+
 myAudio.onplaying = function () {
   setItemToStorage("isPlaying", false)
   isPlaying = false;
@@ -411,7 +434,8 @@ var render = async function () {
   ctx.font = "15px Helvetica";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-  ctx.fillText(`Eslapsed Time: ${elapsedTime}`, 20, 20);
+  const timerElapsed = convertTime(elapsedTime)
+  ctx.fillText(`Eslapsed Time: ${timerElapsed}`, 20, 20);
   ctx.fillText(`Score: ${score}`, 20, 35);
   document.getElementById('best-time').innerHTML = getHighest('newBestTime');
   document.getElementById("high-score").innerHTML = getHighest('newHighScore');
