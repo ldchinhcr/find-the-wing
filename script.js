@@ -437,10 +437,10 @@ var render = async function () {
   const timerElapsed = convertTime(elapsedTime)
   ctx.fillText(`Eslapsed Time: ${timerElapsed}`, 20, 20);
   ctx.fillText(`Score: ${score}`, 20, 35);
-  document.getElementById('best-time').innerHTML = getHighest('newBestTime');
-  document.getElementById("high-score").innerHTML = getHighest('newHighScore');
+  document.getElementById('best-time').innerHTML = getOptionsFromStorage('newBestTime');
+  document.getElementById("high-score").innerHTML = getOptionsFromStorage('newHighScore');
   document.getElementById("score-area").innerHTML = `${score}`;
-  document.getElementById("elapsed-time").innerHTML = `${elapsedTime}`;
+  document.getElementById("elapsed-time").innerHTML = `${timerElapsed}`;
 };
 
 var main = function () {
